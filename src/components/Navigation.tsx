@@ -22,8 +22,22 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab }) => {
 
   if (!user) return null;
 
+  const getStatusBadgeClass = (levelName: string) => {
+    switch (levelName.toLowerCase()) {
+      case 'silver':
+        return 'status-silver';
+      case 'gold':
+        return 'status-gold';
+      case 'emerald':
+      case 'platinum':
+        return 'status-emerald';
+      default:
+        return 'bg-muted text-muted-foreground';
+    }
+  };
+
   return (
-    <nav className="bg-white border-b border-gray-200 shadow-sm">
+    <nav className="bg-card border-b border-border shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo and Brand */}
@@ -32,18 +46,18 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab }) => {
               <Star className="w-5 h-5 text-white" />
             </div>
             <h1 className="text-xl font-bold bg-gradient-loyalty bg-clip-text text-transparent">
-              LoyaltyHub
+              MIC Loyalty
             </h1>
           </div>
 
           {/* Tab Navigation */}
           <div className="flex items-center space-x-4">
-            <div className="flex bg-gray-100 rounded-lg p-1">
+            <div className="flex bg-muted rounded-lg p-1">
               <Button
                 variant={activeTab === 'user' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setActiveTab('user')}
-                className={activeTab === 'user' ? 'bg-white shadow-sm' : ''}
+                className={activeTab === 'user' ? 'bg-primary text-primary-foreground shadow-sm' : ''}
               >
                 <User className="w-4 h-4 mr-2" />
                 Dashboard
@@ -52,7 +66,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab }) => {
                 variant={activeTab === 'admin' ? 'default' : 'ghost'}
                 size="sm"
                 onClick={() => setActiveTab('admin')}
-                className={activeTab === 'admin' ? 'bg-white shadow-sm' : ''}
+                className={activeTab === 'admin' ? 'bg-primary text-primary-foreground shadow-sm' : ''}
               >
                 <Shield className="w-4 h-4 mr-2" />
                 Admin
@@ -72,10 +86,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab }) => {
               </Badge>
               <Badge 
                 variant="outline"
-                style={{ 
-                  borderColor: user.loyaltyLevel.color,
-                  color: user.loyaltyLevel.color 
-                }}
+                className={getStatusBadgeClass(user.loyaltyLevel.name)}
               >
                 {user.loyaltyLevel.name}
               </Badge>
@@ -90,7 +101,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab }) => {
                   </div>
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 bg-white" align="end" forceMount>
+              <DropdownMenuContent className="w-56 bg-card" align="end" forceMount>
                 <div className="flex flex-col space-y-1 p-2">
                   <p className="text-sm font-medium">{user.firstName} {user.lastName}</p>
                   <p className="text-xs text-muted-foreground">{user.email}</p>
@@ -101,7 +112,7 @@ const Navigation: React.FC<NavigationProps> = ({ activeTab, setActiveTab }) => {
                   Settings
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout} className="text-red-600">
+                <DropdownMenuItem onClick={logout} className="text-destructive">
                   <LogOut className="mr-2 h-4 w-4" />
                   Log out
                 </DropdownMenuItem>

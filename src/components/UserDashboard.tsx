@@ -12,13 +12,27 @@ const UserDashboard: React.FC = () => {
   if (!user) return null;
 
   const nextLevel = {
-    name: 'Platinum',
+    name: 'Emerald',
     minPoints: 2000,
-    color: '#e5e7eb'
+    color: '#10b981'
   };
 
   const progressToNextLevel = ((user.totalPoints - user.loyaltyLevel.minPoints) / (nextLevel.minPoints - user.loyaltyLevel.minPoints)) * 100;
   const pointsNeeded = nextLevel.minPoints - user.totalPoints;
+
+  const getStatusBadgeClass = (levelName: string) => {
+    switch (levelName.toLowerCase()) {
+      case 'silver':
+        return 'status-silver';
+      case 'gold':
+        return 'status-gold';
+      case 'emerald':
+      case 'platinum':
+        return 'status-emerald';
+      default:
+        return 'bg-muted text-muted-foreground';
+    }
+  };
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -34,8 +48,7 @@ const UserDashboard: React.FC = () => {
           <div className="flex items-center gap-4">
             <Badge 
               variant="secondary" 
-              className="glass-effect text-white border-white/30"
-              style={{ backgroundColor: user.loyaltyLevel.color + '40' }}
+              className={`glass-effect text-white border-white/30 ${getStatusBadgeClass(user.loyaltyLevel.name)}`}
             >
               <Star className="w-4 h-4 mr-1" />
               {user.loyaltyLevel.name} Member
@@ -105,10 +118,10 @@ const UserDashboard: React.FC = () => {
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Discount Rate
             </CardTitle>
-            <Star className="h-4 w-4 text-loyalty-gold" />
+            <Star className="h-4 w-4 text-yellow-400" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-loyalty-gold">
+            <div className="text-2xl font-bold text-yellow-400">
               {user.loyaltyLevel.discountPercentage}%
             </div>
             <p className="text-xs text-muted-foreground">

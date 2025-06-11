@@ -64,11 +64,11 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				loyalty: {
-					primary: '#6366f1',
-					secondary: '#a855f7',
-					accent: '#ec4899',
-					gold: '#f59e0b',
-					success: '#10b981'
+					primary: '#22c55e',
+					secondary: '#10b981',
+					accent: '#16a34a',
+					emerald: '#10b981',
+					success: '#22c55e'
 				}
 			},
 			borderRadius: {
@@ -109,9 +109,9 @@ export default {
 				'scale-in': 'scale-in 0.3s ease-out'
 			},
 			backgroundImage: {
-				'gradient-loyalty': 'linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)',
-				'gradient-card': 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
-				'gradient-gold': 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
+				'gradient-loyalty': 'linear-gradient(135deg, #22c55e 0%, #10b981 50%, #16a34a 100%)',
+				'gradient-card': 'linear-gradient(135deg, #1e293b 0%, #334155 100%)',
+				'gradient-emerald': 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
 			}
 		}
 	},
