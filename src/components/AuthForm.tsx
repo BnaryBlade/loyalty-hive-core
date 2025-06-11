@@ -5,9 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { Star, Mail, Lock, User, Phone } from 'lucide-react';
+import { Star, Mail, Lock, User, Phone, Building } from 'lucide-react';
 
 const AuthForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,7 +18,9 @@ const AuthForm: React.FC = () => {
     password: '',
     firstName: '',
     lastName: '',
-    phone: ''
+    phone: '',
+    role: 'customer' as 'customer' | 'business_admin',
+    businessName: ''
   });
   
   const { login, register } = useAuth();
@@ -50,9 +53,13 @@ const AuthForm: React.FC = () => {
     
     try {
       await register(registerData);
+      const welcomeMessage = registerData.role === 'customer' 
+        ? "Welcome to our loyalty program! Your account has been created and you've earned 100 welcome bonus points."
+        : "Welcome! Your business admin account has been created successfully.";
+      
       toast({
-        title: "Welcome to our loyalty program!",
-        description: "Your account has been created and you've earned 100 welcome bonus points.",
+        title: "Registration successful!",
+        description: welcomeMessage,
       });
     } catch (error) {
       toast({
@@ -138,6 +145,43 @@ const AuthForm: React.FC = () => {
               
               <TabsContent value="register" className="space-y-4">
                 <form onSubmit={handleRegister} className="space-y-4">
+                  <div className="space-y-3">
+                    <Label>I want to register as:</Label>
+                    <RadioGroup 
+                      value={registerData.role} 
+                      onValueChange={(value: 'customer' | 'business_admin') => 
+                        setRegisterData({ ...registerData, role: value })
+                      }
+                      className="flex flex-col space-y-2"
+                    >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="customer" id="customer" />
+                        <Label htmlFor="customer" className="font-normal">Customer (to earn loyalty points)</Label>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="business_admin" id="business_admin" />
+                        <Label htmlFor="business_admin" className="font-normal">Business Administrator</Label>
+                      </div>
+                    </RadioGroup>
+                  </div>
+
+                  {registerData.role === 'business_admin' && (
+                    <div className="space-y-2">
+                      <Label htmlFor="businessName">Business Name</Label>
+                      <div className="relative">
+                        <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                        <Input
+                          id="businessName"
+                          placeholder="Enter your business name"
+                          value={registerData.businessName}
+                          onChange={(e) => setRegisterData({ ...registerData, businessName: e.target.value })}
+                          className="pl-10"
+                          required
+                        />
+                      </div>
+                    </div>
+                  )}
+                  
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label htmlFor="firstName">First Name</Label>
@@ -222,9 +266,11 @@ const AuthForm: React.FC = () => {
                   </Button>
                 </form>
                 
-                <div className="text-center text-sm text-muted-foreground">
-                  Join now and get <span className="font-semibold text-loyalty-primary">100 bonus points</span>!
-                </div>
+                {registerData.role === 'customer' && (
+                  <div className="text-center text-sm text-muted-foreground">
+                    Join now and get <span className="font-semibold text-loyalty-primary">100 bonus points</span>!
+                  </div>
+                )}
               </TabsContent>
             </Tabs>
           </CardContent>

@@ -1,4 +1,3 @@
-
 export interface User {
   id: string;
   email: string;
@@ -6,11 +5,13 @@ export interface User {
   lastName: string;
   phone?: string;
   dateJoined: string;
-  loyaltyLevel: LoyaltyLevel;
+  role: 'customer' | 'business_admin';
+  loyaltyLevel?: LoyaltyLevel;
   totalPurchases: number;
   totalPoints: number;
   currentMonthPurchases: number;
   isActive: boolean;
+  businessName?: string; // для бизнес-администраторов
 }
 
 export interface LoyaltyLevel {

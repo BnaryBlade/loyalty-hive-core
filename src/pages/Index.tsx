@@ -7,7 +7,7 @@ import UserDashboard from '@/components/UserDashboard';
 import AdminDashboard from '@/components/AdminDashboard';
 
 const Index = () => {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { user, isAuthenticated, isLoading } = useAuth();
   const [activeTab, setActiveTab] = useState<'user' | 'admin'>('user');
 
   if (isLoading) {
@@ -25,12 +25,23 @@ const Index = () => {
     return <AuthForm />;
   }
 
+  // Show different dashboards based on user role
+  const showUserDashboard = user?.role === 'customer';
+  const showAdminDashboard = user?.role === 'business_admin';
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <Navigation activeTab={activeTab} setActiveTab={setActiveTab} />
+      <Navigation 
+        activeTab={activeTab} 
+        setActiveTab={setActiveTab}
+        userRole={user?.role}
+      />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {activeTab === 'user' ? <UserDashboard /> : <AdminDashboard />}
+        {showUserDashboard && <UserDashboard />}
+        {showAdminDashboard && <AdminDashboard />}
+        {!showUserDashboard && !showAdminDashboard && activeTab === 'user' && <UserDashboard />}
+        {!showUserDashboard && !showAdminDashboard && activeTab === 'admin' && <AdminDashboard />}
       </main>
     </div>
   );

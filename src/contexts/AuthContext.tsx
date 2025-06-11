@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User } from '@/types/loyalty';
 
@@ -18,6 +17,8 @@ interface RegisterData {
   firstName: string;
   lastName: string;
   phone?: string;
+  role: 'customer' | 'business_admin';
+  businessName?: string;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -49,7 +50,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      // Mock user data
+      // Mock user data - в реальном приложении это будет приходить с сервера
       const userData: User = {
         id: '1',
         email,
@@ -57,6 +58,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         lastName: 'Doe',
         phone: '+1234567890',
         dateJoined: '2024-01-01',
+        role: 'customer',
         loyaltyLevel: {
           id: 'gold',
           name: 'Gold',
@@ -93,19 +95,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         lastName: userData.lastName,
         phone: userData.phone,
         dateJoined: new Date().toISOString(),
-        loyaltyLevel: {
+        role: userData.role,
+        businessName: userData.businessName,
+        totalPurchases: 0,
+        totalPoints: userData.role === 'customer' ? 100 : 0, // Welcome bonus only for customers
+        currentMonthPurchases: 0,
+        isActive: true
+      };
+
+      // Add loyalty level only for customers
+      if (userData.role === 'customer') {
+        newUser.loyaltyLevel = {
           id: 'bronze',
           name: 'Bronze',
           minPoints: 0,
           discountPercentage: 0,
           color: '#cd7f32',
           benefits: ['Welcome bonus points']
-        },
-        totalPurchases: 0,
-        totalPoints: 100, // Welcome bonus
-        currentMonthPurchases: 0,
-        isActive: true
-      };
+        };
+      }
       
       setUser(newUser);
       localStorage.setItem('loyaltyUser', JSON.stringify(newUser));
