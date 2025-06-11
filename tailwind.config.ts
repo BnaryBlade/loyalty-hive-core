@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,13 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				loyalty: {
+					primary: '#6366f1',
+					secondary: '#a855f7',
+					accent: '#ec4899',
+					gold: '#f59e0b',
+					success: '#10b981'
 				}
 			},
 			borderRadius: {
@@ -84,11 +92,26 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'fade-in': {
+					'0%': { opacity: '0', transform: 'translateY(10px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'scale-in': {
+					'0%': { opacity: '0', transform: 'scale(0.95)' },
+					'100%': { opacity: '1', transform: 'scale(1)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fade-in 0.5s ease-out',
+				'scale-in': 'scale-in 0.3s ease-out'
+			},
+			backgroundImage: {
+				'gradient-loyalty': 'linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #ec4899 100%)',
+				'gradient-card': 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
+				'gradient-gold': 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
 			}
 		}
 	},
